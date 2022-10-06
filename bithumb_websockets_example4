@@ -19,3 +19,24 @@ class MyWindow(QMainWindow):
         label.move(20, 20)
         
         self.price = QLabel("-",self)
+        self.price.move(80, 20)
+        self.price.resize(100, 20)
+        
+        button = QPushButton("Start",self)
+        button.move(20, 50)
+        button.clicked.connect(self.receive_msg)
+        
+        self.th = Worker()
+        self.th.recv.connect(self.receive_msg)
+        
+    @pyqtSlot(str)
+    def receive_msg(self, msg):
+        print(msg)
+        self.price.setText(msg)
+    def click_btn(self):
+        self.th.start()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    mywindow = MyWindow()
+    mywindow.show()
+    app.exec_()
